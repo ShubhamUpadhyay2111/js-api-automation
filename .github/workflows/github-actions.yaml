@@ -1,0 +1,20 @@
+name: ts jest puppeteer
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm test -- --reporter mochawesome
+      - run: echo "🍏 This job's status is ${{ job.status }}."
